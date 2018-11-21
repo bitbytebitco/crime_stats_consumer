@@ -15,21 +15,21 @@ const n_opts = {
     //json: true
 }
 function date_str(neg_days_delta) {
-    var today = new Date();
+    const today = new Date();
     if(neg_days_delta != 0){
         today.setDate(today.getDate() - neg_days_delta);
     }
-    var dd = today.getDate();
+    const dd = today.getDate();
 
-    var mm = today.getMonth()+1; 
-    var yyyy = today.getFullYear();
+    const mm = today.getMonth()+1; 
+    const yyyy = today.getFullYear();
     if(dd<10) {
         dd='0'+dd;
     } 
     if(mm<10) {
         mm='0'+mm;
     }
-    var mmddyyyy = mm+''+dd+''+yyyy
+    const mmddyyyy = mm+''+dd+''+yyyy
     console.log(mmddyyyy);
     return mmddyyyy;
 }
