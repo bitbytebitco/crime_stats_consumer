@@ -45,41 +45,60 @@ const e_opts = {
     }
 }
 
-/* app */
+/* application logic */
 const app = express();
-app.get('/neighborhoods', function(req, res){
-    rp(n_opts).then(function(neighborhoods){
-            console.log(neighborhoods);
-            res.send(neighborhoods);
-    }).catch(function(err) {
-        console.log(err);
-    });
-});
-app.get('/activities', function(req, res){
-    rp(a_opts).then(function(neighborhoods){
-            console.log(neighborhoods);
-            res.send(neighborhoods);
-    }).catch(function(err) {
-        console.log(err);
-    });
-});
-app.get('/events/:from?/:to?/:limit?', function(req, res){
+const process_neighborhoods = async function(res) {
+    let neighborhoods;
+    try {
+        neighborhoods = await rp(n_opts);   
+    } catch(e) {
+        console.log(e);
+    }
+    return res.send(neighborhoods);
+}
+const process_activities = async function(res) {
+    let activities;
+    try {
+        activities = await rp(a_opts);
+    } catch(e) {
+        console.log(e);
+    }
+    return res.send(activities);
+}
+const process_events = async function(req, res){
+    let events;
+    let e_ops = update_req_opts(req);
+    try {
+        events = await rp(e_opts);
+    } catch(e) {
+        console.log(e);
+    }
+    console.log(req.params);
+    if(typeof(req.params['limit']) != 'undefined'){
+        console.log('with limit');
+        console.log(req.params['limit']);
+        return res.send(events.slice(0,parseInt(req.params['limit'])));
+    } else {
+        console.log('no limit');
+        return res.send(events);
+    }
+}
+const update_req_opts = async function(req){
     if(typeof(req.params['from']) != 'undefined' && typeof(req.params['from']) != 'undefined'){
        e_opts['body']['date_from'] = req.params['from']; 
        e_opts['body']['date_to'] = req.params['to'];
     }
-    rp(e_opts).then(function(events){
-        console.log(req.params);
-        if(typeof(req.params['limit']) != 'undefined'){
-            console.log('with limit');
-            console.log(req.params['limit']);
-            res.send(events.slice(0,parseInt(req.params['limit'])));
-        } else {
-            console.log('no limit');
-            res.send(events);
-        }
-    }).catch(function(err){
-        console.log(err);
-    });
+    return e_opts;
+}
+
+/* routes */
+app.get('/neighborhoods', function(req, res){
+    process_neighborhoods(res);
+});
+app.get('/activities', function(req, res){
+    process_activities(res);
+});
+app.get('/events/:from?/:to?/:limit?', function(req, res){
+    process_events(req, res);
 });
 app.listen(port, () => console.log(`listening on port ${port}`));
