@@ -44,19 +44,11 @@ const e_opts = {
         activities:[],
     }
 }
-const parseJsonAsync = (jsonString) => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(JSON.parse(jsonString))
-        })
-    })
-}
 
 /* app */
 const app = express();
 app.get('/neighborhoods', function(req, res){
     rp(n_opts).then(function(neighborhoods){
-            //parseJsonAsync(body).then(jsonData => console.log(jsonData));
             console.log(neighborhoods);
             res.send(neighborhoods);
     }).catch(function(err) {
@@ -65,7 +57,6 @@ app.get('/neighborhoods', function(req, res){
 });
 app.get('/activities', function(req, res){
     rp(a_opts).then(function(neighborhoods){
-            //parseJsonAsync(body).then(jsonData => console.log(jsonData));
             console.log(neighborhoods);
             res.send(neighborhoods);
     }).catch(function(err) {
