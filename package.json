@@ -1,0 +1,15 @@
+{
+  "name": "@bitbytebit/crime_stats_consumer",
+  "version": "1.0.0",
+  "description": "Simple HTTP Application to consume private Crime Stats API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zachary Becker <bitbytebitco@gmail.com> (https://bitbytebit.co)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "request-promise": "^4.2.2"
+  }
+}
