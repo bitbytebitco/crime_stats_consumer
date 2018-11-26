@@ -83,10 +83,10 @@ const process_events = async function(req, res){
     }
     console.log(req.params);
   	res.setHeader('Content-Type', 'application/json');
-    if(typeof(req.params['limit']) != 'undefined'){
+    if(typeof(req.query['limit']) != 'undefined'){
         console.log('with limit');
-        console.log(req.params['limit']);
-        return res.send(events.slice(0,parseInt(req.params['limit'])));
+        console.log(req.query['limit']);
+        return res.send(events.slice(0,parseInt(req.query['limit'])));
     } else {
         console.log('no limit');
         return res.send(events);
@@ -158,7 +158,7 @@ app.get('/activities', function(req, res){
 });
 /**
  * @swagger
- * /events/{date_from}/{date_to}/{limit}:
+ * /events/{date_from}/{date_to}:
  *   get:
  *     summary: List all the crime events 
  *     description: Returns a list of crime events, selected by date range, optionally limited  
@@ -181,7 +181,7 @@ app.get('/activities', function(req, res){
  *         schema:
  *           type: string
  *           example: 11052018 
-*       - in: path 
+*       - in: query 
  *         name: limit 
  *         description: response size limiter
  *         type: integer 
@@ -225,14 +225,14 @@ app.get('/activities', function(req, res){
  *                       example: 20181120-0772 
  *				        
  */
-app.get('/events/:from?/:to?/:limit?', function(req, res){
+app.get('/events/:from?/:to?', function(req, res){
     process_events(req, res);
 });
 
 // -- setup up swagger-jsdoc --
 const swaggerDefinition = {
   info: {
-    title: 'Animals',
+    title: 'Crime Stats API',
     version: '1.0.0',
     description: 'Simple HTTP Application to consume private Crime Stats API.',
   },
